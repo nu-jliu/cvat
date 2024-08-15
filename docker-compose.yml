@@ -97,7 +97,7 @@ services:
     command: init run server
     labels:
       - traefik.enable=true
-      - traefik.http.services.cvat.loadbalancer.server.port=8080
+      - traefik.http.services.cvat.loadbalancer.server.port=8090
       - traefik.http.routers.cvat.rule=Host(`${CVAT_HOST:-localhost}`) &&
         PathPrefix(`/api/`, `/static/`, `/admin`, `/documentation/`, `/django-rq`)
       - traefik.http.routers.cvat.entrypoints=web
@@ -242,7 +242,7 @@ services:
     container_name: traefik
     restart: always
     ports:
-      - 8080:8080
+      - 8090:8090
       - 8090:8090
     environment:
       CVAT_HOST: ${CVAT_HOST:-localhost}
@@ -256,7 +256,7 @@ services:
       # And we want to use environment variables to allow individual settings to be
       # overridden by other Compose files.
       TRAEFIK_LOG_FORMAT: json
-      TRAEFIK_ENTRYPOINTS_web_ADDRESS: :8080
+      TRAEFIK_ENTRYPOINTS_web_ADDRESS: :8090
       TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: "false"
       TRAEFIK_PROVIDERS_DOCKER_NETWORK: cvat
       TRAEFIK_PROVIDERS_FILE_DIRECTORY: /etc/traefik/rules
@@ -291,7 +291,7 @@ services:
       - run
       - --server
       - --log-level=error
-      - --set=services.cvat.url=http://cvat-server:8080
+      - --set=services.cvat.url=http://cvat-server:8090
       - --set=bundles.cvat.service=cvat
       - --set=bundles.cvat.resource=/api/auth/rules
       - --set=bundles.cvat.polling.min_delay_seconds=5
